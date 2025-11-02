@@ -11,6 +11,8 @@ Route::prefix('v1')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 
     Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+
         Route::get('/machines', [MachineController::class, 'index']);
         Route::post('/machines', [MachineController::class, 'store']);
 

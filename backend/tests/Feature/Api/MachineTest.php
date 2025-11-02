@@ -13,7 +13,7 @@ class MachineTest extends TestCase
 
     public function test_the_user_can_list_machines(): void
     {
-        Machine::factory()->count(3)->create();
+        Machine::factory()->withLogs()->count(3)->create();
 
         $response = $this->actingAsSanctumUser()->getJson('api/v1/machines');
 

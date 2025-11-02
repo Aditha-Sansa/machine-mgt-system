@@ -27,8 +27,7 @@ class MachineFactory extends Factory
         ];
     }
 
-
-    public function configure(): MachineFactory
+    public function withLogs()
     {
         return $this->afterCreating(function ($machine) {
             MachineHourLog::factory()->count(rand(2, 5))->create([

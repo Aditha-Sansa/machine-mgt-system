@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Requests\V1\Machine\AddHoursRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
@@ -26,4 +27,12 @@ class MachineController extends Controller
 
         return (new MachineResource($createdMachineRecord))->response()->setStatusCode(201);
     }
+
+    public function addHours(AddHoursRequest $addHoursRequest, int $id): JsonResponse
+    {
+        $createdHourLog = $this->machineRepository->addHours($id, $addHoursRequest->validated()['hours']);
+
+        return response()->json(['message' => 'Successfully Updated Hours', "data" => $createdHourLog], 201);
+    }
+
 }

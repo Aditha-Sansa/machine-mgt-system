@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MachineResource extends JsonResource
+class MachineHourLogResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,9 @@ class MachineResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'purchase_date' => $this->purchase_date,
-            'purchase_price' => $this->purchase_price,
-            'reset_count' => (int) $this->reset_count,
-            'hourLogs' => MachineHourLogResource::collection($this->whenLoaded('hourLogs'))
+            'hours_added' => $this->hours_added,
+            'is_reset' => (bool) $this->is_reset,
+            'created_at' => $this->created_at,
         ];
     }
 }

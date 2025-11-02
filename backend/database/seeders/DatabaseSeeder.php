@@ -21,6 +21,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'machineuser@example.com',
         ]);
 
-        Machine::factory()->count(3)->create();
+        Machine::factory()->withLogs()->count(3)->create();
     }
 }

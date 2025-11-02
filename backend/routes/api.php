@@ -13,6 +13,9 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/machines', [MachineController::class, 'index']);
         Route::post('/machines', [MachineController::class, 'store']);
+
+
+        Route::post('/machines/{id}/add-hours', [MachineController::class, 'addHours']);
     });
 
 });

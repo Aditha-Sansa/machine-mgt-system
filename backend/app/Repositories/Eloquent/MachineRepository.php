@@ -11,7 +11,9 @@ class MachineRepository implements MachineRepositoryInterface
 {
     public function list(): LengthAwarePaginator|Collection
     {
-        return Machine::query()->latest()->get();
+        return Machine::query()->withCount([
+            'hourLogs as reset_count' => fn ($q) => $q->where('is_reset', true)
+        ])->latest()->get();
     }
 
     public function find(int $id): Machine

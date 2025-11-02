@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Machine;
+use App\Models\MachineHourLog;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,5 +25,21 @@ class MachineFactory extends Factory
             'category' => fake()->randomElement(['Large', 'Medium', 'Small']),
             'brand' => fake()->randomElement(['BMW', 'Suzuki', 'CAT']),
         ];
+    }
+
+
+    public function configure(): MachineFactory
+    {
+        return $this->afterCreating(function ($machine) {
+            MachineHourLog::factory()->count(rand(2, 5))->create([
+                'machine_id' => $machine->id
+            ]);
+
+            if (rand(0, 1)) {
+                MachineHourLog::factory()->reset()->create([
+                    'machine_id' => $machine->id
+                ]);
+            }
+        });
     }
 }

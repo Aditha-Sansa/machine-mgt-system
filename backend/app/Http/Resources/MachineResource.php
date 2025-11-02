@@ -19,6 +19,8 @@ class MachineResource extends JsonResource
             'name' => $this->name,
             'purchase_date' => $this->purchase_date,
             'purchase_price' => $this->purchase_price,
+            'category' => $this->category,
+            'brand' => $this->brand,
             'total_hours' => $this->total_hours,
             'reset_count' => (int) $this->reset_count,
             'hourLogs' => MachineHourLogResource::collection($this->whenLoaded('hourLogs'))

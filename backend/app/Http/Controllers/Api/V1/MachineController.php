@@ -29,6 +29,11 @@ class MachineController extends Controller
         return (new MachineResource($createdMachineRecord))->response()->setStatusCode(201);
     }
 
+    public function show(int $id): MachineResource
+    {
+        return new MachineResource($this->machineRepository->find($id));
+    }
+
     public function addHours(AddHoursRequest $addHoursRequest, int $id): JsonResponse
     {
         $createdHourLog = $this->machineRepository->addHours($id, $addHoursRequest->validated()['hours']);

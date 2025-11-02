@@ -17,4 +17,5 @@ interface MachineRepositoryInterface
 
     public function addHours(int $machineId, $hours): MachineHourLog;
     public function resetHours(int $machineId): MachineHourLog;
+    public function hourHistory(int $machineId): Collection; 
 }

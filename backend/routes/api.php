@@ -17,6 +17,7 @@ Route::prefix('v1')->group(function () {
 
         Route::post('/machines/{id}/add-hours', [MachineController::class, 'addHours']);
         Route::post('/machines/{id}/reset', [MachineController::class, 'resetHours']);
+        Route::get('/machines/{id}/hours', [MachineController::class, 'hours']);
     });
 
 });

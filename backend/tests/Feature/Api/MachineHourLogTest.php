@@ -79,20 +79,43 @@ class MachineHourLogTest extends TestCase
 
     public function test_it_cannot_reset_if_the_total_hours_are_zero()
     {
-        $machineId = $this->machineHourLog->machine_id;
-        $machine = Machine::find($machineId);
+        $machine = $this->machineHourLog->machine;
 
         $machine->hourLogs()->create([
             'hours_added' => 0,
             'is_reset' => true
         ]);
 
-        $response = $this->actingAsSanctumUser()->postJson('/api/v1/machines/'.$machineId.'/reset');
+        $response = $this->actingAsSanctumUser()->postJson('/api/v1/machines/'.$machine->id.'/reset');
         $response->assertStatus(422)
             ->assertOnlyJsonValidationErrors(['reset'])
             ->assertInvalid([
                 'reset' => 'This machine hours are already at zero.',
             ]);
 
+    }
+
+    public function test_it_can_get_hour_log_history()
+    {
+        $machine = $this->machineHourLog->machine;
+
+        $machine->hourLogs()->create([
+            'hours_added' => 1,
+            'is_reset' => false
+        ]);
+
+        $response = $this->actingAsSanctumUser()->getJson('/api/v1/machines/'.$machine->id.'/hours');
+        $response->assertStatus(200)->assertJson([
+            "data" => [
+                [
+                    "hours_added" => 1,
+                    "is_reset" => 0
+                ],
+                [
+                    "hours_added" => 1.5,
+                    "is_reset" => 0
+                ]
+            ]
+        ]);
     }
 }

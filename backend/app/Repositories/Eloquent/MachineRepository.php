@@ -79,4 +79,9 @@ class MachineRepository implements MachineRepositoryInterface
         return $this->find($machineId)->hourLogs()->latest()->first();
     }
 
+    public function hourHistory(int $machineId): Collection
+    {
+        return $this->find($machineId)->hourLogs()->get();
+    }
+
 }

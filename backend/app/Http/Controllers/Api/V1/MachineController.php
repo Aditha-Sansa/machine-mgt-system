@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\V1\Machine\AddHoursRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MachineResource;
+use App\Http\Resources\MachineHourLogResource;
+use App\Http\Requests\V1\Machine\AddHoursRequest;
 use App\Http\Requests\V1\Machine\StoreMachineRequest;
 use App\Repositories\Interfaces\MachineRepositoryInterface;
 
@@ -35,11 +36,18 @@ class MachineController extends Controller
         return response()->json(['message' => 'Successfully Updated Hours', "data" => $createdHourLog], 201);
     }
 
-    public function resetHours(int $id)
+    public function resetHours(int $id): JsonResponse
     {
         $resetHourLog = $this->machineRepository->resetHours($id);
 
         return response()->json(['message' => 'Successfully Reset the Hours', "data" => $resetHourLog], 201);
+    }
+
+    public function hours(int $id)
+    {
+        $hourLogs = $this->machineRepository->hourHistory($id);
+
+        return MachineHourLogResource::collection($hourLogs);
     }
 
 }

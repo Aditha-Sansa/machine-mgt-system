@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\User;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
@@ -12,6 +13,10 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    public function __construct(private UserRepositoryInterface $userRepository)
+    {
+    }
+
     public function login(LoginRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -20,7 +25,7 @@ class AuthController extends Controller
             throw ValidationException::withMessages(['email' => 'Invalid credentials']);
         }
 
-        $user = User::where('email', $data['email'])->firstOrFail();
+        $user = $this->userRepository->findByEmail($data['email']);
         $token = $user->createToken('api')->plainTextToken;
 
         return response()->json([

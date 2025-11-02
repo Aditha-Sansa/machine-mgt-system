@@ -63,4 +63,20 @@ class MachineRepository implements MachineRepositoryInterface
         return $this->find($machineId)->hourLogs()->latest()->first();
     }
 
+    public function resetHours(int $machineId): MachineHourLog
+    {
+        $machine = $this->find($machineId);
+
+        if ($machine->total_hours <= 0) {
+            throw ValidationException::withMessages(['reset' => 'This machine hours are already at zero.']);
+        }
+
+        $machine->hourLogs()->create([
+            'hours_added' => 0,
+            'is_reset' => true,
+        ]);
+
+        return $this->find($machineId)->hourLogs()->latest()->first();
+    }
+
 }

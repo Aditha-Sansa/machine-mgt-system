@@ -35,4 +35,11 @@ class MachineController extends Controller
         return response()->json(['message' => 'Successfully Updated Hours', "data" => $createdHourLog], 201);
     }
 
+    public function resetHours(int $id)
+    {
+        $resetHourLog = $this->machineRepository->resetHours($id);
+
+        return response()->json(['message' => 'Successfully Reset the Hours', "data" => $resetHourLog], 201);
+    }
+
 }

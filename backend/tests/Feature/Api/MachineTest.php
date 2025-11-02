@@ -42,21 +42,23 @@ class MachineTest extends TestCase
             'name' => $machineRecordToCreate['name'],
             'purchase_date' => $machineRecordToCreate['purchase_date'],
             'purchase_price' => $machineRecordToCreate['purchase_price'],
-            'reset_count' => 0
+            'reset_count' => 0,
+            'total_hours' => 0
         ];
 
         $response = $this->actingAsSanctumUser()->postJson('api/v1/machines', $machineRecordToCreate);
 
         $response
             ->assertStatus(201)
-            ->assertJsonCount(5, 'data')
+            ->assertJsonCount(6, 'data')
             ->assertJsonStructure([
                 'data' => [
                     'id',
                     'name',
                     'purchase_date',
                     'purchase_price',
-                    'reset_count'
+                    'reset_count',
+                    'total_hours'
                 ]
             ])
             ->assertExactJson(['data' => $machineRecordToExpectFromServer]);

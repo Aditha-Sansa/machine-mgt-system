@@ -16,4 +16,5 @@ interface MachineRepositoryInterface
     public function delete(int $id): void;
 
     public function addHours(int $machineId, $hours): MachineHourLog;
+    public function resetHours(int $machineId): MachineHourLog;
 }

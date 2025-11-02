@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Machine;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,11 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Machine Controller User',
+            'email' => 'machineuser@example.com',
         ]);
+
+        Machine::factory()->withLogs()->count(3)->create();
     }
 }

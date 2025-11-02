@@ -42,6 +42,8 @@ class MachineTest extends TestCase
             'name' => $machineRecordToCreate['name'],
             'purchase_date' => $machineRecordToCreate['purchase_date'],
             'purchase_price' => $machineRecordToCreate['purchase_price'],
+            'category' => 'Large',
+            'brand' => 'CAT',
             'reset_count' => 0,
             'total_hours' => 0
         ];
@@ -50,13 +52,15 @@ class MachineTest extends TestCase
 
         $response
             ->assertStatus(201)
-            ->assertJsonCount(6, 'data')
+            ->assertJsonCount(8, 'data')
             ->assertJsonStructure([
                 'data' => [
                     'id',
                     'name',
                     'purchase_date',
                     'purchase_price',
+                    'category',
+                    'brand',
                     'reset_count',
                     'total_hours'
                 ]

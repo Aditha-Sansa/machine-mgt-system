@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Machine;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,5 +20,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Machine Controller User',
             'email' => 'machineuser@example.com',
         ]);
+
+        Machine::factory()->count(3)->create();
     }
 }

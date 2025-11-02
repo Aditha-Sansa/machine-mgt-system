@@ -15,7 +15,7 @@ class MachineRepository implements MachineRepositoryInterface
     {
         return Machine::query()->withCount([
             'hourLogs as reset_count' => fn ($q) => $q->where('is_reset', true)
-        ])->latest()->get();
+        ])->latest()->paginate(10);
     }
 
     public function find(int $id): Machine

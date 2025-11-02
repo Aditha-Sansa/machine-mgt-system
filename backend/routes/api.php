@@ -16,6 +16,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/machines', [MachineController::class, 'index']);
         Route::post('/machines', [MachineController::class, 'store']);
         Route::get('/machines/{id}', [MachineController::class, 'show']);
+        Route::put('/machines/{id}', [MachineController::class, 'update']);
+        Route::delete('/machines/{id}', [MachineController::class, 'destroy']);
 
 
         Route::post('/machines/{id}/add-hours', [MachineController::class, 'addHours']);

@@ -19,7 +19,7 @@ class MachineResource extends JsonResource
             'name' => $this->name,
             'purchase_date' => $this->purchase_date,
             'purchase_price' => $this->purchase_price,
-            'reset_count' => $this->reset_count
+            'reset_count' => (int) $this->reset_count
         ];
     }
 }

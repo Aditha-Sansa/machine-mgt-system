@@ -10,9 +10,7 @@ use Tests\TestCase;
 class MachineTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     */
+
     public function test_the_user_can_list_machines(): void
     {
         Machine::factory()->count(3)->create();
@@ -27,5 +25,40 @@ class MachineTest extends TestCase
                     '*' => ['id', 'name', 'purchase_date', 'purchase_price', 'reset_count']
                 ]
             ]);
+    }
+
+    public function test_the_user_can_create_a_machine()
+    {
+        $machineRecordToCreate = [
+            'name' => "Sprayer Machine",
+            'purchase_date' => now()->toDateString(),
+            'purchase_price' => 43000.00,
+            'category' => 'Large',
+            'brand' => 'CAT'
+        ];
+
+        $machineRecordToExpectFromServer = [
+            'id' => 1,
+            'name' => $machineRecordToCreate['name'],
+            'purchase_date' => $machineRecordToCreate['purchase_date'],
+            'purchase_price' => $machineRecordToCreate['purchase_price'],
+            'reset_count' => 0
+        ];
+
+        $response = $this->actingAsSanctumUser()->postJson('api/v1/machines', $machineRecordToCreate);
+
+        $response
+            ->assertStatus(201)
+            ->assertJsonCount(5, 'data')
+            ->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'name',
+                    'purchase_date',
+                    'purchase_price',
+                    'reset_count'
+                ]
+            ])
+            ->assertExactJson(['data' => $machineRecordToExpectFromServer]);
     }
 }

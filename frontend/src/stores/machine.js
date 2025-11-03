@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { listMachines } from '@/api/machineService'
+import { listMachines, getMachine, updateMachine, createMachine } from '@/api/machineService'
 
 export const useMachineStore = defineStore('machine', {
     state: () => ({
@@ -27,6 +27,24 @@ export const useMachineStore = defineStore('machine', {
                     this.total = res.meta?.total ?? this.items.length
                 }
             } finally { this.loading = false }
-        }
+        },
+        async find(id) {
+            this.selected = await getMachine(id)
+        },
+        async save(payload) {
+            try {
+                if (payload.id) {
+                    this.selected = await updateMachine(payload.id, payload)
+                } else {
+                    await createMachine(payload)
+                }
+                await this.fetch(this.page)
+            } catch (err) {
+                if (err.validationErrors) {
+                    throw err.validationErrors
+                }
+                throw err
+            }
+        },
     }
 })

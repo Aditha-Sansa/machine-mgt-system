@@ -11,10 +11,22 @@ api.interceptors.request.use((config) => {
     return config
 })
 
-// simple error passthrough
 api.interceptors.response.use(
-    res => res,
-    err => Promise.reject(err)
+    (res) => res,
+    (err) => {
+        const status = err.response?.status
+
+        if (status === 401) {
+            localStorage.removeItem('token')
+            window.location.href = '/login'
+        }
+
+        if (status === 422) {
+            err.validationErrors = err.response.data.errors
+        }
+
+        return Promise.reject(err)
+    }
 )
 
 

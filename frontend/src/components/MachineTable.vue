@@ -3,6 +3,10 @@ const props = defineProps({
     items: Array
 })
 
+const emit = defineEmits({
+    e: 'view',
+    id: Number
+})
 </script>
 
 <template>
@@ -23,6 +27,11 @@ const props = defineProps({
                     <td class="px-4 py-2">{{ m.purchase_date }}</td>
                     <td class="px-4 py-2">{{ m.reset_count ?? 0 }}</td>
                     <td class="px-4 py-2">{{ Number(m.purchase_price) }}</td>
+                    <td class="px-4 py-2 text-right">
+                        <button class="text-blue-600 hover:underline" @click="emit('view', m.id)">View</button>
+                        <button class="text-gray-700 hover:underline ml-3" @click="emit('edit', m)">Edit</button>
+                        <button class="text-red-600 hover:underline ml-3" @click="emit('delete', m.id)">Delete</button>
+                    </td>
                 </tr>
             </tbody>
         </table>

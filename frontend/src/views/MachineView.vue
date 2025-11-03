@@ -1,17 +1,34 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import Card from '@/components/Card.vue'
 import MachineTable from '@/components/MachineTable.vue'
 import PaginationBar from '@/components/PaginationBar.vue'
+import MachineFormModal from '@/components/MachineFormModal.vue'
 import { useRouter } from 'vue-router'
 import { useMachineStore } from '@/stores/machine'
 
 const machines = useMachineStore()
 const router = useRouter()
+const editing = ref(null);
+const openForm = ref(false)
 
-onMounted(() => { machines.fetch().then(console.log('fetched records')) })
+onMounted(() => { machines.fetch() })
+const modalErrors = reactive({})
 
-
+function view(id) { router.push({ name: 'machine-detail', params: { id } }) }
+function add() { editing.value = null; openForm.value = true }
+async function save(val) {
+    try {
+        await machines.save(val)
+        openForm.value = false
+    } catch (e) {
+        if (typeof e === 'object') {
+            Object.assign(modalErrors, e)
+        } else {
+            console.error('Unexpected error:', e)
+        }
+    }
+}
 </script>
 
 <template>
@@ -25,8 +42,11 @@ onMounted(() => { machines.fetch().then(console.log('fetched records')) })
 
 
         <Card>
-            <MachineTable :items="machines.items" />
+            <MachineTable :items="machines.items" @view="view" />
             <PaginationBar :page="machines.page" :lastPage="machines.lastPage" @change="machines.fetch" />
         </Card>
+
+        <MachineFormModal :open="openForm" :value="editing" :errors="modalErrors" @save="save"
+            @close="openForm = false" />
     </div>
 </template>
